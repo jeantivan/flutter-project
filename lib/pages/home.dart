@@ -1,4 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+final List<Widget> items = List.generate(
+    12,
+    (w) => Container(
+          width: 200,
+          height: 80,
+          decoration: BoxDecoration(
+              color: Colors.deepPurple,
+              borderRadius: BorderRadius.circular(12)),
+        ));
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -42,9 +53,42 @@ class MyHomePage extends StatelessWidget {
                         topRight: Radius.elliptical(32, 32))),
                 child: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Text(
-                    'Ultimas transacciones: ',
-                    style: theme.textTheme.titleLarge,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        visualDensity: VisualDensity.compact,
+                        contentPadding: const EdgeInsets.all(0),
+                        title: Text(
+                          'Ultimas transacciones: ',
+                          style: theme.textTheme.headlineSmall,
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.work_history_rounded),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          itemCount: 20,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              width: 200,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                  color: theme.colorScheme.secondaryContainer,
+                                  borderRadius: BorderRadius.circular(12)),
+                            );
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 12,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_flutter/pages/home.dart';
-import 'package:proyecto_flutter/pages/settings.dart';
+import 'package:proyecto_flutter/pages/create_transaction.dart';
+import 'package:proyecto_flutter/pages/root.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 Map<String, WidgetBuilder> routes = {
-  '/': (context) => const MyHomePage(),
-  '/settings': (context) => const SettingsPage()
+  '/': (context) => const RootPage(),
+  '/create-transaction': (context) => const CreateTransaction()
 };
 
 class MyApp extends StatelessWidget {

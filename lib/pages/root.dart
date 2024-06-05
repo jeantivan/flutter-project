@@ -26,13 +26,45 @@ class _RootPageState extends State<RootPage> {
 
   int currentView = 0;
 
-  buildFloatingActionButton() {
+  PreferredSizeWidget buildAppBar(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    if (currentView == 0) {
+      return AppBar(
+        foregroundColor: colorScheme.onPrimary,
+        backgroundColor: colorScheme.primary,
+        centerTitle: true,
+        title: Text(
+          "Gestor de gastos",
+          style:
+              theme.textTheme.titleLarge?.apply(color: colorScheme.onPrimary),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.info_outline_rounded),
+          ),
+          const SizedBox(
+            width: 8,
+          )
+        ],
+      );
+    }
+    return AppBar(
+      foregroundColor: colorScheme.onPrimary,
+      backgroundColor: colorScheme.primary,
+    );
+  }
+
+  Widget? buildFloatingActionButton(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     if (currentView == 0) {
       return FloatingActionButton(
+          backgroundColor: colorScheme.surfaceVariant,
           onPressed: () {
             Navigator.pushNamed(context, '/create-transaction');
           },
-          child: const Icon(Icons.add));
+          child: const Icon(Icons.edit_outlined));
     }
     return null;
   }
@@ -43,10 +75,7 @@ class _RootPageState extends State<RootPage> {
     final minWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: theme.colorScheme.primary,
-      appBar: AppBar(
-        foregroundColor: theme.colorScheme.onPrimary,
-        backgroundColor: theme.colorScheme.primary,
-      ),
+      appBar: buildAppBar(context),
       body: SizedBox(
         width: minWidth,
         child: views[currentView],
@@ -64,7 +93,7 @@ class _RootPageState extends State<RootPage> {
               icon: Icon(destination.icon), label: destination.name);
         }).toList(),
       ),
-      floatingActionButton: buildFloatingActionButton(),
+      floatingActionButton: buildFloatingActionButton(context),
     );
   }
 }

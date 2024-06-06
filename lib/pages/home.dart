@@ -1,15 +1,9 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-final List<Widget> items = List.generate(
-    12,
-    (w) => Container(
-          width: 200,
-          height: 80,
-          decoration: BoxDecoration(
-              color: Colors.deepPurple,
-              borderRadius: BorderRadius.circular(12)),
-        ));
+import 'package:proyecto_flutter/common/category.dart';
+import 'package:proyecto_flutter/common/transaction.dart';
+import 'package:proyecto_flutter/widget/transaction_list_item.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -75,13 +69,17 @@ class MyHomePage extends StatelessWidget {
                         child: ListView.separated(
                           itemCount: 20,
                           itemBuilder: (context, index) {
-                            return Container(
-                              width: 200,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                  color: theme.colorScheme.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(12)),
-                            );
+                            final now = DateTime.now();
+                            final trans = Transaction(
+                                id: "$index",
+                                title: "Transaccion $index",
+                                description: "Description",
+                                date: now.subtract(Duration(hours: 3 * index)),
+                                amount: Random().nextBool()
+                                    ? Random().nextDouble() * 700
+                                    : Random().nextDouble() * -700,
+                                category: Category.coffee);
+                            return TransactionItemList(transaction: trans);
                           },
                           separatorBuilder: (context, index) => const SizedBox(
                             height: 12,

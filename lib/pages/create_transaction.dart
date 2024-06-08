@@ -64,8 +64,14 @@ class _MontoViewState extends State<MontoView> {
         Row(
           children: [
             Expanded(
-                child: FilledButton(
-                    onPressed: () {}, child: const Text("Siguiente"))),
+                child: SizedBox(
+              height: 60,
+              child: FilledButton(
+                  onPressed: () {},
+                  child: Text("Siguiente",
+                      style: theme.textTheme.titleLarge
+                          ?.apply(color: theme.colorScheme.onPrimary))),
+            )),
           ],
         ),
         SizedBox(

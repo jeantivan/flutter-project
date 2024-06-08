@@ -20,64 +20,70 @@ class _MontoViewState extends State<MontoView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
-      children: [
-        const SizedBox(
-          height: 88,
-        ),
-        SegmentedButton(
-          segments: const [
-            ButtonSegment(
-                value: TransactionType.expense, label: Text("Gastos")),
-            ButtonSegment(
-                value: TransactionType.income, label: Text("Ingresos"))
-          ],
-          selected: <TransactionType>{transactionType},
-          onSelectionChanged: (newSelection) {
-            setState(() {
-              transactionType = newSelection.first;
-            });
-          },
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Column(
-          children: [
-            Text(
-              "12123,12",
-              style: theme.textTheme.displayMedium,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 12,
+          ),
+          SizedBox(
+            width: 250,
+            child: SegmentedButton(
+              segments: const [
+                ButtonSegment(
+                    value: TransactionType.expense, label: Text("Gastos")),
+                ButtonSegment(
+                    value: TransactionType.income, label: Text("Ingresos"))
+              ],
+              selected: <TransactionType>{transactionType},
+              onSelectionChanged: (newSelection) {
+                setState(() {
+                  transactionType = newSelection.first;
+                });
+              },
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: 126,
-              height: 6,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: theme.colorScheme.primary),
-            )
-          ],
-        ),
-        const Spacer(),
-        Row(
-          children: [
-            Expanded(
-                child: SizedBox(
-              height: 60,
-              child: FilledButton(
-                  onPressed: () {},
-                  child: Text("Siguiente",
-                      style: theme.textTheme.titleLarge
-                          ?.apply(color: theme.colorScheme.onPrimary))),
-            )),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        )
-      ],
+          ),
+          const SizedBox(
+            height: 100,
+          ),
+          Column(
+            children: [
+              Text(
+                "12123,12",
+                style: theme.textTheme.displayMedium,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: 126,
+                height: 6,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: theme.colorScheme.primary),
+              )
+            ],
+          ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                  child: SizedBox(
+                height: 60,
+                child: FilledButton(
+                    onPressed: () {},
+                    child: Text("Siguiente",
+                        style: theme.textTheme.titleLarge
+                            ?.apply(color: theme.colorScheme.onPrimary))),
+              )),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          )
+        ],
+      ),
     );
   }
 }

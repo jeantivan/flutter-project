@@ -23,33 +23,31 @@ class TransactionItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card.filled(
-        color: theme.colorScheme.surfaceContainer,
         child: ListTile(
-          subtitleTextStyle: theme.textTheme.labelMedium,
-          titleTextStyle: theme.textTheme.titleMedium,
-          textColor: theme.colorScheme.onSecondaryContainer,
-          iconColor: theme.colorScheme.error,
-          onTap: () {},
-          leading: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.red.shade200,
-                borderRadius: BorderRadius.circular(8)),
-            child: const Center(
-              child: Icon(size: 24, Icons.favorite_border),
-            ),
-          ),
-          title: Text(
-            transaction.title,
-          ),
-          subtitle: Text(
-            formatDate(transaction.date),
-          ),
-          trailing: Text(
-            transaction.amount.toStringAsFixed(2),
-            style: theme.textTheme.titleMedium?.apply(fontSizeFactor: 1.2),
-          ),
-        ));
+      subtitleTextStyle: theme.textTheme.labelMedium,
+      titleTextStyle: theme.textTheme.titleMedium,
+      textColor: theme.colorScheme.onSecondaryContainer,
+      iconColor: theme.colorScheme.error,
+      onTap: () {},
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+            color: Colors.red.shade200, borderRadius: BorderRadius.circular(8)),
+        child: const Center(
+          child: Icon(size: 24, Icons.favorite_border),
+        ),
+      ),
+      title: Text(
+        transaction.title,
+      ),
+      subtitle: Text(
+        formatDate(transaction.date),
+      ),
+      trailing: Text(
+        transaction.amount.toStringAsFixed(2),
+        style: theme.textTheme.titleMedium?.apply(fontSizeFactor: 1.2),
+      ),
+    ));
   }
 }

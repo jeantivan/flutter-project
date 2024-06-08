@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:proyecto_flutter/widget/keypad.dart';
 
 enum TransactionType {
   income,
@@ -65,6 +66,9 @@ class _MontoViewState extends State<MontoView> {
               )
             ],
           ),
+          const SizedBox(
+            height: 20,
+          ),
           const Spacer(),
           Row(
             children: [
@@ -81,7 +85,8 @@ class _MontoViewState extends State<MontoView> {
           ),
           const SizedBox(
             height: 20,
-          )
+          ),
+          const KeyPad()
         ],
       ),
     );

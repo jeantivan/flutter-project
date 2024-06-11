@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO: Implementar un keypad funcional con un TextEditing (Algo asi se llama)
 class KeyPad extends StatelessWidget {
   const KeyPad({super.key});
 

@@ -1,26 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:proyecto_flutter/widget/keypad.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto_flutter/common/transaction.dart';
+import 'package:proyecto_flutter/common/category.dart';
+import 'package:proyecto_flutter/providers/create_transaction_provider.dart';
+import 'package:proyecto_flutter/widget/category_choice.dart';
+import 'package:proyecto_flutter/widget/numeric_textfield.dart';
 
-enum TransactionType {
-  income,
-  expense,
-}
-
-class MontoView extends StatefulWidget {
-  const MontoView({super.key});
-
-  @override
-  State<MontoView> createState() => _MontoViewState();
-}
-
-class _MontoViewState extends State<MontoView> {
-  TransactionType transactionType = TransactionType.expense;
+class MontoView extends StatelessWidget {
+  final VoidCallback nextStep;
+  const MontoView({super.key, required this.nextStep});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final amount = context.watch<CreateTransactionProvider>().amount;
+    final transactionType =
+        context.watch<CreateTransactionProvider>().transactionType;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -38,11 +36,9 @@ class _MontoViewState extends State<MontoView> {
                     value: TransactionType.income, label: Text("Ingresos"))
               ],
               selected: <TransactionType>{transactionType},
-              onSelectionChanged: (newSelection) {
-                setState(() {
-                  transactionType = newSelection.first;
-                });
-              },
+              onSelectionChanged: (newSelection) => context
+                  .read<CreateTransactionProvider>()
+                  .changeTransactionType(newSelection.first),
             ),
           ),
           const SizedBox(
@@ -50,9 +46,11 @@ class _MontoViewState extends State<MontoView> {
           ),
           Column(
             children: [
-              Text(
-                "12123,12",
-                style: theme.textTheme.displayMedium,
+              NumericTextfield(
+                labelText: "Monto",
+                onChanged: (value) => context
+                    .read<CreateTransactionProvider>()
+                    .changeAmount(value),
               ),
               const SizedBox(
                 height: 10,
@@ -74,11 +72,11 @@ class _MontoViewState extends State<MontoView> {
             children: [
               Expanded(
                   child: SizedBox(
-                height: 60,
+                height: 48,
                 child: FilledButton(
-                    onPressed: () {},
+                    onPressed: amount != "" ? nextStep : null,
                     child: Text("Siguiente",
-                        style: theme.textTheme.titleLarge
+                        style: theme.textTheme.titleMedium
                             ?.apply(color: theme.colorScheme.onPrimary))),
               )),
             ],
@@ -86,10 +84,85 @@ class _MontoViewState extends State<MontoView> {
           const SizedBox(
             height: 20,
           ),
-          const KeyPad()
         ],
       ),
     );
+  }
+}
+
+class InfoView extends StatelessWidget {
+  const InfoView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final amount = context.watch<CreateTransactionProvider>().amount;
+    final transactionType =
+        context.watch<CreateTransactionProvider>().transactionType;
+    return Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 12,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                buildTransactionChip(context, transactionType),
+                Text(
+                  "$amount €",
+                  style: theme.textTheme.displaySmall,
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            const Divider(
+              height: 1,
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Text("Categoría", style: theme.textTheme.titleMedium),
+            Wrap(
+                spacing: 8,
+                children: Category.values
+                    .map((category) => CategoryChoice(category: category))
+                    .toList()),
+          ],
+        ));
+  }
+
+  Widget buildTransactionChip(
+      BuildContext context, TransactionType transactionType) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isExpense = transactionType.name == "expense";
+
+    final backgroundColor =
+        isExpense ? colorScheme.errorContainer : colorScheme.primaryContainer;
+
+    final borderSide = BorderSide(
+        color: isExpense
+            ? colorScheme.onErrorContainer
+            : colorScheme.onPrimaryContainer);
+
+    final labelStyle = TextStyle(
+        color: isExpense
+            ? colorScheme.onErrorContainer
+            : colorScheme.onPrimaryContainer);
+
+    return Chip(
+        side: borderSide,
+        labelStyle: labelStyle,
+        backgroundColor: backgroundColor,
+        visualDensity: VisualDensity.compact,
+        labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+        label: Text(isExpense ? "Gasto" : "Ingreso"));
   }
 }
 
@@ -104,7 +177,6 @@ class _CreateTransactionState extends State<CreateTransaction>
     with TickerProviderStateMixin {
   late final TabController _tabController;
   final int pageIndex = 0;
-
   @override
   void initState() {
     super.initState();
@@ -124,7 +196,7 @@ class _CreateTransactionState extends State<CreateTransaction>
           title: const Text("Crear transacción"),
           bottom: TabBar(
             controller: _tabController,
-            tabs: [
+            tabs: const [
               Tab(child: Text("Monto")),
               Tab(
                 child: Text("Info"),
@@ -135,13 +207,12 @@ class _CreateTransactionState extends State<CreateTransaction>
         body: TabBarView(
           controller: _tabController,
           children: [
-            MontoView(),
-            Center(
-              child: Text(
-                "Paso 2",
-                style: Theme.of(context).textTheme.displayMedium,
-              ),
-            ),
+            MontoView(nextStep: () {
+              setState(() {
+                _tabController.animateTo(1);
+              });
+            }),
+            const InfoView()
           ],
         ));
   }

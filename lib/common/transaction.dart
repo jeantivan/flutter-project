@@ -1,5 +1,10 @@
 import 'package:proyecto_flutter/common/category.dart';
 
+enum TransactionType {
+  income,
+  expense,
+}
+
 class Transaction {
   final String id;
   final String title;
@@ -7,6 +12,7 @@ class Transaction {
   final DateTime date;
   final double amount;
   final Category category;
+  final TransactionType type;
 
   const Transaction(
       {required this.id,
@@ -14,5 +20,6 @@ class Transaction {
       required this.description,
       required this.date,
       required this.amount,
-      required this.category});
+      required this.category,
+      required this.type});
 }

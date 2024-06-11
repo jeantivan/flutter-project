@@ -70,14 +70,19 @@ class MyHomePage extends StatelessWidget {
                           itemCount: 20,
                           itemBuilder: (context, index) {
                             final now = DateTime.now();
+                            final amount = Random().nextBool()
+                                ? Random().nextDouble() * 700
+                                : Random().nextDouble() * -700;
+                            final type = amount < 0
+                                ? TransactionType.expense
+                                : TransactionType.income;
                             final trans = Transaction(
                                 id: "$index",
                                 title: "Transaccion $index",
                                 description: "Description",
                                 date: now.subtract(Duration(hours: 3 * index)),
-                                amount: Random().nextBool()
-                                    ? Random().nextDouble() * 700
-                                    : Random().nextDouble() * -700,
+                                amount: amount,
+                                type: type,
                                 category: Category.coffee);
                             return TransactionItemList(transaction: trans);
                           },

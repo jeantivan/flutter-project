@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto_flutter/pages/create_transaction.dart';
 import 'package:proyecto_flutter/pages/root.dart';
+import 'package:proyecto_flutter/providers/create_transaction_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => CreateTransactionProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 Map<String, WidgetBuilder> routes = {

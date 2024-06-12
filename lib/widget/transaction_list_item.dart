@@ -33,7 +33,8 @@ class TransactionItemList extends StatelessWidget {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-            color: Colors.red.shade200, borderRadius: BorderRadius.circular(8)),
+            color: const Color.fromRGBO(239, 154, 154, 1),
+            borderRadius: BorderRadius.circular(8)),
         child: const Center(
           child: Icon(size: 24, Icons.favorite_border),
         ),

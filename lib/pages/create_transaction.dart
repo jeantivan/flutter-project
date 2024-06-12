@@ -5,6 +5,7 @@ import 'package:proyecto_flutter/common/transaction.dart';
 import 'package:proyecto_flutter/common/category.dart';
 import 'package:proyecto_flutter/providers/create_transaction_provider.dart';
 import 'package:proyecto_flutter/widget/category_choice.dart';
+import 'package:proyecto_flutter/widget/input_datepicker.dart';
 import 'package:proyecto_flutter/widget/numeric_textfield.dart';
 
 class MontoView extends StatelessWidget {
@@ -100,42 +101,87 @@ class InfoView extends StatelessWidget {
     final amount = context.watch<CreateTransactionProvider>().amount;
     final transactionType =
         context.watch<CreateTransactionProvider>().transactionType;
-    return Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                buildTransactionChip(context, transactionType),
-                Text(
-                  "$amount €",
-                  style: theme.textTheme.displaySmall,
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            const Divider(
-              height: 1,
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Text("Categoría", style: theme.textTheme.titleMedium),
-            Wrap(
-                spacing: 8,
-                children: Category.values
-                    .map((category) => CategoryChoice(category: category))
-                    .toList()),
-          ],
-        ));
+    final date = context.watch<CreateTransactionProvider>().date;
+    return SingleChildScrollView(
+      child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  buildTransactionChip(context, transactionType),
+                  Text(
+                    "$amount €",
+                    style: theme.textTheme.displaySmall,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              const Divider(
+                height: 1,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text("Categoría", style: theme.textTheme.titleMedium),
+              Wrap(
+                  spacing: 8,
+                  children: Category.values
+                      .map((category) => CategoryChoice(category: category))
+                      .toList()),
+              const SizedBox(
+                height: 12,
+              ),
+              Text("Fecha", style: theme.textTheme.titleMedium),
+              Row(
+                children: [
+                  Expanded(
+                    child: CalendarDatePicker(
+                        initialDate: date,
+                        firstDate: DateTime(2000, 1),
+                        lastDate: DateTime(2100, 1),
+                        onDateChanged: (newDate) {
+                          if (context.mounted) {
+                            context
+                                .read<CreateTransactionProvider>()
+                                .changeTransactionDate(newDate);
+                          }
+                        }),
+                  ),
+                ],
+              ),
+              //const InputDatepicker(),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: SizedBox(
+                    height: 48,
+                    child: FilledButton(
+                        onPressed: () {},
+                        child: Text("Siguiente",
+                            style: theme.textTheme.titleMedium
+                                ?.apply(color: theme.colorScheme.onPrimary))),
+                  )),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          )),
+    );
   }
 
   Widget buildTransactionChip(

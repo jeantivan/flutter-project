@@ -10,39 +10,50 @@ class CategoryChoice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedCategory =
-        context.watch<CreateTransactionProvider>().category;
-    final theme = Theme.of(context);
+        Provider.of<CreateTransactionProvider>(context, listen: true).category;
     return ChoiceChip(
-      /* selected: category.name === selectedCategory?.name
-        onSelected: (Category value) => context.watch<CreateTransactionProvider>().selectCategory(value),
-         */
-      label: Text(category.name),
-      avatar: Icon(getCategoryIcon(category)),
+      selected: category.name == selectedCategory?.name,
+      onSelected: (_) {
+        Provider.of<CreateTransactionProvider>(context, listen: false)
+            .selectCategory(category);
+      },
+      label: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 8,
+        children: [
+          Text(category.name),
+          Icon(
+            getCategoryIcon(category),
+            color: getCategoryColor(category),
+            size: 18,
+          )
+        ],
+      ),
     );
   }
 
   IconData getCategoryIcon(Category category) {
     switch (category) {
       case Category.health:
-        return Icons.healing;
+        return Icons.healing_rounded;
       case Category.home:
-        return Icons.home_outlined;
+        return Icons.home_rounded;
       case Category.entertainment:
-        return Icons.videogame_asset_outlined;
+        return Icons.videogame_asset_rounded;
       case Category.coffee:
-        return Icons.coffee_outlined;
+        return Icons.coffee_rounded;
       case Category.education:
-        return Icons.school_outlined;
+        return Icons.school_rounded;
       case Category.food:
-        return Icons.restaurant_outlined;
+        return Icons.restaurant_rounded;
       case Category.family:
-        return Icons.family_restroom_outlined;
+        return Icons.family_restroom_rounded;
       case Category.transport:
-        return Icons.train_outlined;
+        return Icons.train_rounded;
       case Category.gift:
-        return Icons.redeem_outlined;
+        return Icons.redeem_rounded;
       default:
-        return Icons.question_mark_outlined;
+        return Icons.help_rounded;
     }
   }
 

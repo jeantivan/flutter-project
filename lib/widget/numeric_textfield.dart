@@ -18,7 +18,8 @@ class NumericTextfield extends StatelessWidget {
           labelText: labelText,
           hintText: "10.00€",
           border: const OutlineInputBorder(),
-          floatingLabelAlignment: FloatingLabelAlignment.center),
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\,?\d{0,2}'))
